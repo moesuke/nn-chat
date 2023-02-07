@@ -3,23 +3,45 @@ html(lang="ja")
   head
     meta(charset="UTF-8")
     title NNチャット
-  body
-    h1 NNチャット
-    a(href="/logout") ログアウト
-    form(method="post" action="/posts")
-      div
-        textarea(name="content" cols=40 rows=4)
-      div
-        button(type="submit") 送信
-
-    h2 投稿一覧
+    link(rel="stylesheet",
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css",
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC",
+    crossorigin="anonymous")
+  body.container(style={ "padding-top": "70px", "padding-bottom": "200px", "overflow": "scroll" })#container
+    nav.navbar.fixed-top.navbar-dark.bg-primary
+      div.container-fluid
+        h1.text-light.navbar-brand NNチャット
+        div
+          a(href="/logout").btn.btn-outline-light ログアウト
     each post in posts
-      p #{post.postedBy}
-      p 送信日時: #{post.createdAt}
-      p!=post.content
-      - let isDeletable = (user === post.postedBy || user === 'admin')
-      if isDeletable
-        form(method="post" action="/posts/delete")
-          input(type="hidden" name="id" value=post.id)
-          button(type="submit") 削除
-      hr
+      - let cardClass = (user === post.postedBy ? 'card border-primary mb-3' : 'card my-3')
+      div(class=cardClass)
+       div.card-body
+         h5.card-title #{post.postedBy}
+         small.card-text.text-muted #{post.createdAt}
+         p.card-text.lead!=post.content
+       - let isDeletable = (user === post.postedBy || user === 'admin')
+        if isDeletable
+          div.position-absolute.end-0.bottom-0
+            form(method="post" action="/posts/delete")
+              input(type="hidden" name="id" value=post.id)
+              button(type="submit").btn.btn-outline-danger.btn-sm.float-end <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg>
+    nav.fixed-bottom.p-4.bg-light 
+      form(method="post" action="/posts").container-fluid.row.g-3
+        div.col-12
+          textarea(name="content" rows="4").form-control
+        div.col-12
+          button(type="submit").btn.btn-primary.float-end <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>
+    script.
+      window.onload = function(){
+        let container = document.getElementById('container');
+        let scrollToBottom = () => {
+          container.scrollTop = container.scrollHeight;
+        };
+        scrollToBottom();
+        console.log("test")
+      };
+
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js",
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM",
+    crossorigin="anonymous")
