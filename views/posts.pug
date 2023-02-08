@@ -13,7 +13,7 @@ html(lang="ja")
       div.container-fluid
         h1.text-light.navbar-brand.mx-auto NNチャット<i class="bi bi-chat-dots-fill"></i>
         div.dropdown
-          button.btn.btn-outline-light.dropdown-toggle(type="button" id="menu" data-bs-toggle="dropdown" aria-expanded="false") <i class="bi bi-gear-fill"></i>
+          button.btn.btn-outline-light.dropdown-toggle(type="button" id="menu" data-bs-toggle="dropdown" aria-expanded="false") #{user} <i class="bi bi-gear-fill"></i>
           ul.dropdown-menu.dropdown-menu-end(aria-labelledby="menu")
             li 
               a.dropdown-item(href="/logout") ログアウト
