@@ -23,7 +23,7 @@ html(lang="ja")
         div.card-body
           div.d-flex.justify-content-between
             h5.card-title #{post.postedBy}
-            small.card-text.text-muted.float-end #{post.createdAt}
+            small.card-text.text-muted.float-end(data-bs-toggle="tooltip" data-bs-placement="top" title=post.formattedCreatedAt) #{post.relativeCreatedAt}
           p.card-text.lead!=post.content
         - let isDeletable = (user === post.postedBy || user === 'admin')
           if isDeletable
@@ -46,3 +46,8 @@ html(lang="ja")
       window.onload = function() {
         window.scrollTo(0,document.body.scrollHeight);
       }
+
+      const tooltipTriggerElements = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+      tooltipTriggerElements.forEach((tooltipTriggerElement) => {
+        new bootstrap.Tooltip(tooltipTriggerElement);
+      });
