@@ -22,7 +22,10 @@ html(lang="ja")
       div(class=cardClass)
         div.card-body
           div.d-flex.justify-content-between
-            h5.card-title #{post.postedBy}
+            if post.postedBy === 'admin'
+              h5.card-title #{post.postedBy} #[i.bi.bi-patch-check-fill]
+            else
+              h5.card-title #{post.postedBy}
             small.card-text.text-muted.float-end(data-bs-toggle="tooltip" data-bs-placement="top" title=post.formattedCreatedAt) #{post.relativeCreatedAt}
           p.card-text.lead!=post.content
         - let isDeletable = (user === post.postedBy || user === 'admin')
