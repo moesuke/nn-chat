@@ -22,8 +22,11 @@ html(lang="ja")
       div(class=cardClass)
         div.card-body
           div.d-flex.justify-content-between
-            h5.card-title #{post.postedBy}
-            small.card-text.text-muted.float-end #{post.createdAt}
+            if post.postedBy === 'admin'
+              h5.card-title #{post.postedBy} #[i.bi.bi-patch-check-fill]
+            else
+              h5.card-title #{post.postedBy}
+            small.card-text.text-muted.float-end(data-bs-toggle="tooltip" data-bs-placement="top" title=post.formattedCreatedAt) #{post.relativeCreatedAt}
           p.card-text.lead!=post.content
         - let isDeletable = (user === post.postedBy || user === 'admin')
           if isDeletable
@@ -32,7 +35,7 @@ html(lang="ja")
                 input(type="hidden" name="id" value=post.id)
                 button(type="submit").btn.btn-outline-danger.btn-sm <i class="bi bi-trash"></i>
     nav.fixed-bottom.p-4.bg-white 
-      form(method="post" action="/posts").container-fluid.row.g-3
+      form(method="post" action="/posts" name="message-form").container-fluid.row.g-3
         div.col-12
           textarea(name="content" rows="4").form-control
         div.col-12
@@ -46,3 +49,24 @@ html(lang="ja")
       window.onload = function() {
         window.scrollTo(0,document.body.scrollHeight);
       }
+
+      // enter で送信、shift + enter で改行できるようにする
+      const formElement = document.forms['message-form'];
+      const textareaElement = formElement.elements['content'];
+      textareaElement.addEventListener('keydown', (event) => {
+        // enter または return を押したとき
+        if (event.key === 'Enter') {
+
+          // shift も押していたら改行する
+          if (event.shiftKey) return;
+
+          // 改行せずに送信する
+          event.preventDefault();
+          formElement.submit();
+        }
+      });
+
+      const tooltipTriggerElements = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+      tooltipTriggerElements.forEach((tooltipTriggerElement) => {
+        new bootstrap.Tooltip(tooltipTriggerElement);
+      });
